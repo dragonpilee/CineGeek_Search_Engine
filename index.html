@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineGeek Search Engine</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Material Design Dark theme CSS */
+
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            background-color: #121212; /* Dark background color */
+            color: #fff; /* Light text color */
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .section {
+            margin: 20px;
+            padding: 20px;
+            box-sizing: border-box;
+            width: 100%;
+            max-width: 600px;
+            background-color: #1e1e1e; /* Dark section background color */
+            border-radius: 10px; /* Rounded corners */
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); /* Dark shadow */
+        }
+
+        h1 {
+            color: #fff; /* Light heading color */
+            text-align: center;
+        }
+
+        label {
+            font-weight: bold;
+            margin-right: 10px;
+            color: #ccc; /* Light label color */
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            width: 100%;
+            background-color: #333; /* Dark input background color */
+            color: #fff; /* Light text color */
+            border: 1px solid #666; /* Dark border */
+            border-radius: 5px; /* Rounded corners */
+        }
+
+        button {
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #2196F3; /* Button color */
+            color: #fff; /* Button text color */
+            border: none;
+            border-radius: 5px; /* Rounded corners */
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            cursor: pointer;
+            margin-bottom: 5px;
+        }
+
+        p {
+            margin-top: 20px;
+        }
+
+        .alert {
+            color: #fff;
+            text-align: center;
+            font-size: larger;
+            background-color: #2196F3; /* Alert background color */
+            padding: 10px;
+            border-radius: 5px; /* Rounded corners */
+        }
+
+        a {
+            color: #2196F3;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer CSS */
+        .footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #333; /* Footer background color */
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        .footer span {
+            color: #ccc; /* Light text color */
+        }
+    </style>
+</head>
+<body>
+
+<!-- Bootstrap Toast for Note -->
+<div class="alert alert-info" role="alert">
+    CineGeek Search Engine
+</div>
+
+<div class="container">
+    <div class="section">
+        <h1>Movies</h1>
+        <label for="movieName">Enter Movie Name:</label>
+        <input type="text" id="movieName" oninput="getMovieSuggestions()" />
+        <ul id="movieSuggestions"></ul>
+        <button onclick="searchMovie()">Search</button>
+        <p id="movieResult"></p>
+        <button id="movieCopyButton" onclick="copyMovieToClipboard()">Copy Movie URL</button>
+    </div>
+
+    <div class="section">
+        <h1>Series</h1>
+        <label for="seriesName">Enter Series Name:</label>
+        <input type="text" id="seriesName" oninput="getSeriesSuggestions()" />
+        <ul id="seriesSuggestions"></ul>
+        <button onclick="searchSeries()">Search</button>
+        <p id="seriesResult"></p>
+        <button id="seriesCopyButton" onclick="copySeriesToClipboard()">Copy Series URL</button>
+    </div>
+</div>
+<!-- Bootstrap JS and Popper.js -->
+
+<div class="alert alert-info" role="alert">
+    Press the search button every time to regenerate the URL
+</div>
+
+<!-- Footer with copyright and design information -->
+<footer class="footer mt-auto py-3">
+    <div class="container text-center">
+        <span class="text-muted">&copy; 2024 CineGeek. All rights reserved. Designed by Alan Cyril. CineGeek Search Engine is a subsidiary of the CineGeek streaming platform.</span>
+    </div>
+</footer>
+
+<!-- Scripts -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="main.js"></script>
+</body>
+</html>
+
