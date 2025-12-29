@@ -1,0 +1,197 @@
+---
+interface Props {
+  type: 'movie' | 'tv';
+  title: string;
+}
+
+const { type, title } = Astro.props;
+const idPrefix = type === 'movie' ? 'movie' : 'series';
+// Map 'tv' type to 'series' for existing logic if needed, or stick to 'series' naming convention
+// The original code used 'movie' and 'series'.
+const nameId = `${idPrefix}Name`;
+const suggestionsId = `${idPrefix}Suggestions`;
+const resultId = `${idPrefix}Result`;
+const copyBtnId = `${idPrefix}CopyButton`;
+const searchFunction = `search${idPrefix.charAt(0).toUpperCase() + idPrefix.slice(1)}`;
+---
+
+<div class="section">
+  <h1>{title}</h1>
+  <label for={nameId}>Enter {title} Name:</label>
+  <input type="text" id={nameId} data-type={type} class="search-input" />
+  <ul id={suggestionsId} class="suggestions-list"></ul>
+  <button id={`btn-search-${idPrefix}`}>Search</button>
+  <p id={resultId}></p>
+  <button id={copyBtnId} disabled>Copy {title} URL</button>
+</div>
+
+<style>
+	.section {
+		margin: 20px;
+		padding: 20px;
+		box-sizing: border-box;
+		width: 100%;
+		max-width: 600px;
+		background-color: #1e1e1e;
+		border-radius: 10px;
+		box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+	}
+
+	h1 {
+		color: #fff;
+		text-align: center;
+	}
+
+	label {
+		font-weight: bold;
+		margin-right: 10px;
+		color: #ccc;
+	}
+
+	input[type="text"] {
+		padding: 10px;
+		width: 100%;
+		background-color: #333;
+		color: #fff;
+		border: 1px solid #666;
+		border-radius: 5px;
+	}
+
+	button {
+		padding: 10px 20px;
+		cursor: pointer;
+		background-color: #2196F3;
+		color: #fff;
+		border: none;
+		border-radius: 5px;
+		width: 100%;
+		margin-top: 10px;
+	}
+
+	button:disabled {
+		background-color: #555;
+		cursor: not-allowed;
+	}
+
+	ul {
+		list-style-type: none;
+		padding: 0;
+		margin: 0;
+	}
+    
+    :global(li) {
+        cursor: pointer;
+        margin-bottom: 5px;
+        background: #333;
+        padding: 5px;
+        border-bottom: 1px solid #444;
+    }
+    :global(li:hover) {
+        background: #444;
+    }
+    
+    :global(a) {
+        color: #2196F3;
+        text-decoration: none;
+        word-break: break-all;
+    }
+    :global(a:hover) {
+        text-decoration: underline;
+    }
+</style>
+
+<script define:vars={{ idPrefix, type }}>
+{
+  const apiKey = '69a6237ce6938d2fb74092f8ff3a8f16';
+  const nameInput = document.getElementById(`${idPrefix}Name`);
+  const suggestionsList = document.getElementById(`${idPrefix}Suggestions`);
+  const searchBtn = document.getElementById(`btn-search-${idPrefix}`);
+  const resultElement = document.getElementById(`${idPrefix}Result`);
+  const copyButton = document.getElementById(`${idPrefix}CopyButton`);
+  
+  let generatedFirstUrl = '';
+  let generatedSecondUrl = '';
+
+  // Suggestion Logic
+  function clearSuggestions() {
+    suggestionsList.innerHTML = '';
+  }
+
+  nameInput.addEventListener('input', () => {
+    const query = nameInput.value;
+    if (query.trim() === '') {
+      clearSuggestions();
+      return;
+    }
+
+    fetch(`https://api.themoviedb.org/3/search/${type}?api_key=${apiKey}&query=${encodeURIComponent(query)}`)
+      .then(res => res.json())
+      .then(data => {
+        clearSuggestions();
+        if (data.results && data.results.length > 0) {
+          data.results.slice(0, 5).forEach(result => {
+            const li = document.createElement('li');
+            li.textContent = type === 'movie' ? result.title : result.name;
+            li.onclick = () => {
+              nameInput.value = type === 'movie' ? result.title : result.name;
+              clearSuggestions();
+            };
+            suggestionsList.appendChild(li);
+          });
+        }
+      })
+      .catch(console.error);
+  });
+
+  // Search Logic
+  searchBtn.addEventListener('click', () => {
+    const query = nameInput.value;
+    fetch(`https://api.themoviedb.org/3/search/${type}?api_key=${apiKey}&query=${encodeURIComponent(query)}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.results && data.results.length > 0) {
+           const tmdbId = data.results[0].id;
+           const typePath = type === 'movie' ? 'movie' : 'tv';
+           
+           generatedFirstUrl = `https://vidsrc.xyz/embed/${typePath}/${tmdbId}`;
+           generatedSecondUrl = `https://vidsrc.to/embed/${typePath}/${tmdbId}`;
+
+           resultElement.innerHTML = '';
+           
+           const link1 = document.createElement('a');
+           link1.href = generatedFirstUrl;
+           link1.target = '_blank';
+           link1.textContent = "Generated URL 1: " + generatedFirstUrl;
+           
+           const link2 = document.createElement('a');
+           link2.href = generatedSecondUrl;
+           link2.target = '_blank';
+           link2.textContent = "Generated URL 2: " + generatedSecondUrl;
+
+           resultElement.appendChild(link1);
+           resultElement.appendChild(document.createElement('br'));
+           resultElement.appendChild(link2);
+
+           copyButton.disabled = false;
+        } else {
+            resultElement.innerHTML = 'Not found';
+            copyButton.disabled = true;
+        }
+      })
+      .catch(err => {
+          console.error(err);
+          resultElement.innerHTML = 'Error fetching data';
+      });
+  });
+
+  // Copy Logic
+  copyButton.addEventListener('click', () => {
+      const urlToCopy = generatedFirstUrl || generatedSecondUrl;
+      if(urlToCopy) {
+          navigator.clipboard.writeText(urlToCopy).then(() => {
+              alert('URL copied to clipboard!');
+          }).catch(err => console.error('Failed to copy', err));
+      }
+  });
+}
+</script>

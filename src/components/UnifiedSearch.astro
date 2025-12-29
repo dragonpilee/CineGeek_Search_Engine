@@ -1,0 +1,379 @@
+---
+---
+
+<div class="search-container">
+    <div class="logo">
+        <span class="c">C</span><span class="i">i</span><span class="n">n</span><span class="e">e</span><span class="g">G</span><span class="e2">e</span><span class="e3">e</span><span class="k">k</span>
+    </div>
+
+    <div class="search-bar-wrapper">
+        <div class="search-icon">
+            <svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path></svg>
+        </div>
+        <input type="text" id="unifiedSearchInput" placeholder="Search movies or TV series..." autocomplete="off" />
+        <ul id="unifiedSuggestions" class="suggestions-dropdown" style="display: none;"></ul>
+    </div>
+
+    <div class="action-buttons">
+        <button id="btn-search">CineGeek Search</button>
+    </div>
+
+    <div id="resultArea" class="result-area"></div>
+</div>
+
+<style>
+    .search-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        max-width: 584px;
+        padding: 20px;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .logo {
+        font-family: 'Product Sans', 'Roboto', sans-serif;
+        font-size: 80px;
+        font-weight: 500;
+        margin-bottom: 20px;
+        letter-spacing: -2px;
+        user-select: none;
+        transition: font-size 0.3s ease;
+    }
+    
+    /* Google Colors */
+    .c { color: #4285F4; }
+    .i { color: #EA4335; }
+    .n { color: #FBBC05; }
+    .e { color: #4285F4; }
+    .g { color: #34A853; }
+    .e2 { color: #EA4335; }
+    .e3 { color: #FBBC05; }
+    .k { color: #4285F4; }
+
+    .search-bar-wrapper {
+        position: relative;
+        width: 100%;
+        background: #303134;
+        border: 1px solid #5f6368;
+        border-radius: 24px;
+        display: flex;
+        align-items: center;
+        padding: 0 14px;
+        height: 46px;
+        box-shadow: none;
+        transition: background-color 200ms, box-shadow 200ms, border-color 200ms;
+    }
+
+    .search-bar-wrapper:hover, .search-bar-wrapper:focus-within {
+        background-color: #303134;
+        box-shadow: 0 1px 6px rgba(0,0,0,0.5);
+        border-color: rgba(223, 225, 229, 0);
+    }
+
+    .search-icon svg {
+        fill: #9aa0a6;
+        height: 20px;
+        width: 20px;
+        margin-right: 12px;
+    }
+
+    input[type="text"] {
+        background-color: transparent;
+        border: none;
+        color: #e8eaed;
+        font-size: 16px;
+        flex: 1;
+        outline: none;
+        height: 100%;
+        font-family: inherit;
+    }
+
+    .suggestions-dropdown {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: #303134;
+        border-radius: 0 0 24px 24px;
+        padding: 10px 0 20px 0;
+        list-style: none;
+        margin: 0;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.5);
+        z-index: 10;
+        border-top: none;
+        margin-top: 0;
+        padding-top: 0; 
+        display: none;
+        animation: fadeIn 0.2s ease-out;
+    }
+    
+    :global(.search-bar-wrapper.open) {
+        border-radius: 24px 24px 0 0;
+        border-bottom: 1px solid transparent;
+        box-shadow: 0 1px 6px rgba(0,0,0,0.5);
+    }
+
+    .action-buttons {
+        margin-top: 28px;
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap; /* Allow wrapping on small screens */
+        justify-content: center;
+    }
+
+    button {
+        background-color: #303134;
+        border: 1px solid #303134;
+        border-radius: 4px;
+        color: #e8eaed;
+        font-family: inherit;
+        font-size: 14px;
+        margin: 11px 4px;
+        padding: 0 16px;
+        line-height: 27px;
+        height: 36px;
+        min-width: 54px;
+        text-align: center;
+        cursor: pointer;
+        user-select: none;
+        transition: border 0.2s, background-color 0.2s, color 0.2s;
+    }
+
+    button:hover {
+        border: 1px solid #5f6368;
+        color: #e8eaed;
+        background-color: #3c4043;
+    }
+
+    .result-area {
+        margin-top: 30px;
+        color: #9aa0a6;
+        width: 100%;
+        text-align: center;
+        animation: slideUpFade 0.4s ease-out; /* Animation for results */
+    }
+
+    /* Suggestion Items */
+    :global(.suggestion-item) {
+        padding: 6px 14px 6px 46px; 
+        cursor: pointer;
+        color: #e8eaed;
+        display: flex; 
+        align-items: center;
+        font-size: 16px; 
+        line-height: 22px;
+        transition: background-color 0.1s ease;
+    }
+    
+    :global(.suggestion-item:hover) {
+        background-color: #3c4043;
+    }
+    
+    :global(.suggestion-icon) {
+         margin-right: 12px;
+         fill: #9aa0a6;
+         height: 18px;
+         width: 18px;
+    }
+    
+    :global(.media-tag) {
+        font-size: 12px;
+        color: #9aa0a6;
+        margin-left: auto;
+        border: 1px solid #5f6368;
+        padding: 0 6px;
+        border-radius: 4px;
+    }
+    
+    :global(a.generated-link) {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 12px;
+        background: #303134;
+        color: #8ab4f8;
+        margin-bottom: 10px;
+        border-radius: 8px;
+        border: 1px solid #5f6368;
+        transition: background 0.2s, transform 0.1s;
+        text-decoration: none;
+    }
+    :global(a.generated-link:hover) {
+        background: #3c4043;
+        transform: scale(1.02); /* Subtle pop effect */
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideUpFade {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Mobile Responsiveness */
+    @media (max-width: 600px) {
+        .logo {
+            font-size: 50px; /* Smaller logo */
+            margin-bottom: 15px;
+        }
+
+        .search-container {
+            padding: 15px;
+            width: 95%; /* Use more screen width */
+        }
+        
+        .search-bar-wrapper {
+            height: 44px;
+        }
+
+        input[type="text"] {
+            font-size: 14px;
+        }
+
+        .action-buttons {
+            margin-top: 20px;
+        }
+
+        button {
+            margin: 5px;
+            width: 100%; /* Full width buttons on mobile */
+            max-width: 200px;
+        }
+    }
+</style>
+
+<script>
+{
+    const apiKey = import.meta.env.PUBLIC_TMDB_API_KEY;
+    const input = document.getElementById('unifiedSearchInput') as HTMLInputElement;
+    const suggestionsBox = document.getElementById('unifiedSuggestions');
+    const wrapper = document.querySelector('.search-bar-wrapper');
+    const resultArea = document.getElementById('resultArea');
+    const regularSearchBtn = document.getElementById('btn-search');
+
+    // Helper: Create SVG icon for suggestions
+    const searchIconSvg = `<svg class="suggestion-icon" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path></svg>`;
+
+    let currentResults = [];
+
+    // Clear suggestions
+    const closeSuggestions = () => {
+        suggestionsBox.style.display = 'none';
+        suggestionsBox.innerHTML = '';
+        wrapper.classList.remove('open');
+    };
+
+    // Show results
+    const showLinks = (id, type, title) => {
+        const typePath = type === 'movie' ? 'movie' : 'tv';
+        const url1 = `https://vidsrc.xyz/embed/${typePath}/${id}`;
+        const url2 = `https://vidsrc.to/embed/${typePath}/${id}`;
+        // Replaced failed sources with new alternatives
+        // 2embed requires different endpoints for movie vs tv
+        const url3 = type === 'movie' 
+            ? `https://www.2embed.cc/embed/${id}` 
+            : `https://www.2embed.cc/embedtv/${id}&s=1&e=1`; 
+        const url4 = `https://vidsrc.cc/v2/embed/${typePath}/${id}`;
+
+        resultArea.innerHTML = `
+            <div style="margin-bottom:20px; font-size: 18px; color: #e8eaed;">
+                Stream <strong>${title}</strong> (${type === 'movie' ? 'Movie' : 'Series'})
+            </div>
+            <a href="${url1}" target="_blank" class="generated-link">🔴 Source 1</a>
+            <a href="${url2}" target="_blank" class="generated-link">🔵 Source 2</a>
+            <a href="${url3}" target="_blank" class="generated-link">🟢 Source 3</a>
+            <a href="${url4}" target="_blank" class="generated-link">🟡 Source 4</a>
+        `;
+    };
+    
+    // "I'm Feeling Lucky" -> Auto-pick first result
+    const performLuckySearch = () => {
+         const query = input.value;
+         if(!query.trim()) return;
+         
+         fetch(`https://api.themoviedb.org/3/search/multi?api_key=${apiKey}&query=${encodeURIComponent(query)}`)
+            .then(res => res.json())
+            .then(data => {
+                if(data.results) {
+                    // Filter for only movie/tv
+                    const valid = data.results.find(r => r.media_type === 'movie' || r.media_type === 'tv');
+                    if(valid) {
+                        const title = valid.media_type === 'movie' ? valid.title : valid.name;
+                        showLinks(valid.id, valid.media_type, title);
+                    } else {
+                        resultArea.textContent = 'No playable content found (feeling unlucky?)';
+                    }
+                }
+            });
+    };
+
+    input.addEventListener('input', () => {
+        const query = input.value;
+        if (!query.trim()) {
+            closeSuggestions();
+            return;
+        }
+
+        fetch(`https://api.themoviedb.org/3/search/multi?api_key=${apiKey}&query=${encodeURIComponent(query)}`)
+            .then(res => res.json())
+            .then(data => {
+                const results = data.results || [];
+                // Filter out 'person'
+                const filtered = results.filter(r => r.media_type === 'movie' || r.media_type === 'tv').slice(0, 7);
+                currentResults = filtered;
+
+                suggestionsBox.innerHTML = '';
+                if (filtered.length > 0) {
+                    filtered.forEach(r => {
+                        const li = document.createElement('li');
+                        li.className = 'suggestion-item';
+                        const title = r.media_type === 'movie' ? r.title : r.name;
+                        const year = (r.release_date || r.first_air_date || '').split('-')[0];
+                        
+                        li.innerHTML = `
+                            ${searchIconSvg}
+                            <span>${title} ${year ? `(${year})` : ''}</span>
+                            <span class="media-tag">${r.media_type.toUpperCase()}</span>
+                        `;
+                        
+                        li.onclick = () => {
+                            input.value = title;
+                            closeSuggestions();
+                            showLinks(r.id, r.media_type, title);
+                        };
+                        suggestionsBox.appendChild(li);
+                    });
+                    suggestionsBox.style.display = 'block';
+                    wrapper.classList.add('open');
+                } else {
+                    closeSuggestions();
+                }
+            })
+            .catch(console.error);
+    });
+
+    // Close dropdown on outside click
+    document.addEventListener('click', (e) => {
+        if (!wrapper.contains(e.target as Node)) {
+            closeSuggestions();
+        }
+    });
+
+    // Button Listeners
+    regularSearchBtn.addEventListener('click', () => {
+        // Mock Google Search behavior: Just does "Lucky" for now as we don't have a specific results page
+        performLuckySearch(); 
+    });
+    
+    // Enter key
+    input.addEventListener('keypress', (e) => {
+        if(e.key === 'Enter') performLuckySearch();
+    });
+}
+</script>

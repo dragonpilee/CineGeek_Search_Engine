@@ -1,69 +1,84 @@
-# CineGeek Search Engine
+# 🎬 CineGeek Search Engine
 
-![HTML5](https://img.shields.io/badge/Frontend-HTML5-orange)
-![CSS3](https://img.shields.io/badge/CSS3-Bootstrap%20%7C%20Material%20Dark-blue)
-![JavaScript](https://img.shields.io/badge/Backend-JavaScript-yellow)
-![TMDb API](https://img.shields.io/badge/API-TMDb-01b4e4)
-![MIT License](https://img.shields.io/badge/License-MIT-green)
+A minimalist, Google-inspired search engine for Movies and TV Series. Built with **Astro**, **Docker**, and **TMDb**.
 
----
-
-Welcome to the official repository of **CineGeek Search Engine**, the ultimate tool for movie and series enthusiasts to find their favorite content effortlessly. Powered by the extensive database of The Movie Database (TMDb), our search engine provides quick access to movies and series along with direct streaming links.
-
----
+![CineGeek Search](https://i.imgur.com/example-screenshot.png) 
+*(Replace with actual screenshot)*
 
 ## ✨ Features
 
-- **Quick Search**: Easily search for your favorite movies and series by typing their names in the search bar.
-- **Auto Suggestions**: Get suggestions as you type, making it easier to find the exact content you're looking for.
-- **Direct Streaming Links**: Instantly access streaming links for movies and series, allowing you to watch your desired content without hassle.
-- **Copy URL Functionality**: Copy generated URLs to clipboard with just one click, ensuring seamless sharing and access.
+*   **Unified Search**: Intelligent search bar that automatically detects Movies and TV Series.
+*   **Google-Style Design**: Clean, centered, and dark-themed (`#202124`) interface.
+*   **Multi-Source Streaming**: Aggregates up to 4 reliable streaming sources:
+    *   🔴 Source 1: `vidsrc.xyz`
+    *   🔵 Source 2: `vidsrc.to`
+    *   🟢 Source 3: `2embed.cc`
+    *   🟡 Source 4: `vidsrc.cc`
+*   **Responsive**: Fully optimized for mobile, tablet, and desktop.
+*   **Dockerized**: Run anywhere with a single command.
 
----
+## 🚀 Quick Start (Docker)
 
-## 🚀 How to Use
+The easiest way to run CineGeek is with Docker.
 
-1. Enter the name of the movie or series you want to search in the respective input field.
-2. Select the desired suggestion from the auto-suggested list (if applicable).
-3. Click the "Search" button to generate streaming links.
-4. Click on the generated URLs to directly access the content.
-5. Optionally, use the "Copy URL" button to copy the generated URL to clipboard for easy sharing.
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/dragonpilee/CineGeek_Search_Engine.git
+    cd CineGeek_Search_Engine
+    ```
 
----
+2.  **Create a `.env` file:**
+    Copy the example env file and add your TMDb API Key.
+    ```bash
+    cp .env.example .env
+    # Edit .env and set PUBLIC_TMDB_API_KEY=your_key_here
+    ```
 
-## 🛠️ Technologies Used
+3.  **Run with Docker Compose:**
+    ```bash
+    docker compose up -d --build
+    ```
 
-- **Frontend**: HTML, CSS (Bootstrap, Material Design Dark theme)
-- **Backend**: JavaScript (with Fetch API)
-- **API**: The Movie Database (TMDb) API for fetching movie and series data
-- **External Libraries**: jQuery, Popper.js (for Bootstrap functionality)
+4.  **Open in Browser:**
+    Visit `http://localhost:8080`
 
----
+## 🛠️ Development
 
-## 🖥️ Setup Instructions
+To run locally without Docker:
 
-1. **Clone this repository** to your local machine.
-2. **Open the `index.html` file** in your preferred web browser.
-3. **Start searching** for your favorite movies and series instantly!
+1.  **Install Dependencies:**
+    ```bash
+    npm install
+    ```
 
----
+2.  **Start Dev Server:**
+    ```bash
+    npm run dev
+    ```
 
-## 🤝 Contributions
+## 📦 Deployment
 
-Contributions to the CineGeek Search Engine project are welcomed!  
-If you have any suggestions, feature requests, or bug fixes, feel free to open an issue or submit a pull request.
+### Netlify
 
----
+This project is configured for easy deployment on Netlify.
+
+1.  Push your code to GitHub.
+2.  Import the project in Netlify.
+3.  Set the **Build Command** to `npm run build`.
+4.  Set the **Publish Directory** to `dist`.
+5.  **Important**: Add `PUBLIC_TMDB_API_KEY` in Netlify's **Site Settings > Build & Deploy > Environment variables**.
+
+## 📝 Configuration
+
+### API Keys
+This app requires a [TMDb API Key](https://www.themoviedb.org/documentation/api).
+Set it in your `.env` file:
+
+```ini
+PUBLIC_TMDB_API_KEY=your_api_key_here
+```
 
 ## 📄 License
 
-This project is licensed under the [MIT License](LICENSE).
-
----
-
-**CineGeek Search Engine** is a subsidiary of the CineGeek streaming platform.  
-For any inquiries or support, please contact us at support@cinegeek.com.
-
-Thank you for using CineGeek Search Engine! Happy searching and happy streaming! 🎬🍿
-
----
+Developed with ❤️ by CineGeek.
+© 2025 CineGeek. All rights reserved.

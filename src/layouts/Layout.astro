@@ -1,0 +1,78 @@
+---
+interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>{title}</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+		<meta name="generator" content={Astro.generator} />
+	</head>
+	<body>
+		<slot />
+		
+		<!-- Footer -->
+		<footer class="footer">
+            <p>Developed with ❤️ by CineGeek</p>
+            <p>&copy; 2025 CineGeek. All rights reserved.</p>
+		</footer>
+	</body>
+</html>
+
+<style is:global>
+    :root {
+        --bg-color: #202124;
+        --text-color: #e8eaed;
+        --search-bg: #303134;
+        --search-border: #5f6368;
+        --link-color: #8ab4f8;
+        --footer-bg: #171717;
+    }
+
+	body {
+		font-family: 'Roboto', arial, sans-serif;
+		margin: 0;
+		background-color: var(--bg-color);
+		color: var(--text-color);
+		min-height: 100vh;
+		display: flex;
+		flex-direction: column;
+	}
+
+    main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        padding-bottom: 100px; /* Visual balance */
+    }
+
+	.footer {
+		background-color: var(--footer-bg);
+        color: #9aa0a6;
+		text-align: center;
+		padding: 15px 0;
+        font-size: 14px;
+		margin-top: auto;
+	}
+    
+    a {
+        color: var(--link-color);
+        text-decoration: none;
+    }
+    
+    a:hover {
+        text-decoration: underline;
+    }
+</style>
