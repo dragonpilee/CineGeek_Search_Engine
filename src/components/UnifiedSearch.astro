@@ -251,6 +251,10 @@
 <script>
 {
     const apiKey = import.meta.env.PUBLIC_TMDB_API_KEY;
+    if (!apiKey) {
+        console.error('CineGeek Error: PUBLIC_TMDB_API_KEY is missing! Search will not work.');
+        alert('Site Config Error: API Key is missing. Please check Netlify settings.');
+    }
     const input = document.getElementById('unifiedSearchInput') as HTMLInputElement;
     const suggestionsBox = document.getElementById('unifiedSuggestions');
     const wrapper = document.querySelector('.search-bar-wrapper');
